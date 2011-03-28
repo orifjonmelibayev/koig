@@ -5,10 +5,9 @@ Route::set('koig', 'koig/<width>(/<height>)(/<bg>(/<fg>(/<text>(/<text_angle>)))
 		'controller' => 'koig',
 		'action'     => 'dummy',
 		'height'     => 0,
-		'bg'     => '000000',
-		'fg'     => 'ffffff',
+		'bg'     => '000',
+		'fg'     => 'fff',
 		'text'     => '',
-		'text_angle'     => 0,
 		'text_angle'     => 0,
 		'format' => 'gif',
 	));

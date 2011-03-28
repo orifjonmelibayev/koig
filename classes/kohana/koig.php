@@ -4,10 +4,10 @@ abstract class Kohana_Koig extends Controller {
 
 	public $width = 1;
 	public $height = 0;
-	public $bg = '000000';
-	public $fg = 'ffffff';
+	public $bg = '000';
+	public $fg = 'fff';
 	public $format = 'gif';
-	public $text_angle = 0; //I don't use this but if you wanted to angle your text you would change it here.
+	public $text_angle = 0; 
 	public $text = '';
 	public $font;
 
