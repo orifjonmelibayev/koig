@@ -10,28 +10,42 @@ abstract class Kohana_Koig extends Controller {
 	public $text_angle = 0; 
 	public $text = '';
 	public $font;
+	public $default_size = array( 
+									'banner' => array('width' => 100, 'height' => 60), // TODO: Add more sizes
+								);
 
 	public function before()
 	{
-		$this->width = $this->request->param('width');
-		// if height is not given make it square
-		if ( ! $this->height = $this->request->param('height'))
-			$this->height = $this->width;
-		$this->bg = $this->request->param('bg');
-		$this->fg = $this->request->param('fg');
+		$size = $this->request->param('size');
+		if ($s = Arr::get($this->default_size,$size))
+		{
+			$this->width = $s['width'];
+			$this->height = $s['height'];
+		}
+		else
+		{
+			// get width and height from size
+			$size = explode('x',$size);
+			$this->width = preg_replace('/[^\d]/i', '',$size[0]);
+			isset($size[1]) ? $this->height = preg_replace('/[^\d]/i', '',$size[1]) : $this->height = $this->width;
+		}
+
 		$this->format = $this->request->param('format');
-		$this->text_angle = $this->request->param('text_angle');
+
+		$this->request->query('bg') and $this->bg = $this->request->query('bg');
+		$this->request->query('fg') and $this->fg = $this->request->query('fg');
+		$this->request->query('text_angle') and $this->text_angle = $this->request->query('text_angle');
+
 		$this->font = Kohana::find_file('fonts',"mplus-1c-medium",'ttf'); // TODO:make it more flexible 
-		if ( ! $this->text = $this->request->param('text'))
-			$this->text = $this->width." × ".$this->height; //Default text is size of image
+		$this->request->query('text') ? $this->text = $this->request->query('text') : $this->text = $this->width." × ".$this->height; //Default text is size of image
 
 	}
 
 	public function action_dummy()
 	{
 		$area = $this->width * $this->height;
-		//if ($area >= 16000000)  //Limit the size of the image to no more than an area of 16,000,000.
-			 // throw Kohana error here
+		if ($area >= 16000000)  //Limit the size of the image to no more than an area of 16,000,000.
+			  throw new HTTP_Exception_505('Image size is too big');
 		$img = imagecreate($this->width,$this->height); //Create an image.
 		$bg = Color::hex2rgb($this->bg);
 		$fg = Color::hex2rgb($this->fg);
@@ -81,6 +95,11 @@ abstract class Kohana_Koig extends Controller {
 		// Get the captured output and close the buffer
 		$this->response->body(ob_get_clean());
 // */
+	}
+
+	public function action_test()
+	{
+		$this->response->body('testing');
 	}
 
 		//Ruquay K Calloway http://ruquay.com/sandbox/imagettf/ made a better function to find the coordinates of the text bounding box so I used it.

@@ -1,5 +1,5 @@
-#Kohana image generator#
+#Kohana image generator
 Create dummy images.
 
-##TODO:## 
+##TODO:
 *  Add named shortcuts. i.e. predefined settings for standard sized images
