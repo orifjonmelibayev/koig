@@ -72,7 +72,7 @@ class Color {
 		$hex_in = strtolower($hex_in);
 		$hex_in = preg_replace('/#/', '', $hex_in); //Strips out the # character
 		$hexlength = strlen($hex_in);
-		$hex = '';
+		$hex = $hex_in;
 		switch($hexlength) {
 			case 1:
 				$hex = $hex_in.$hex_in.$hex_in.$hex_in.$hex_in.$hex_in;
@@ -82,7 +82,7 @@ class Color {
 			break;
 			case 3:
 				$hex = $hex_in[0].$hex_in[0].$hex_in[1].$hex_in[1].$hex_in[2].$hex_in[2];
-			break;
+			break; // I don't know what to do with 4 or 5 digit entries :) I think, we should validate for 1,2,3,6 digit code.
 		}
 
 		$red = substr($hex,0,2);
